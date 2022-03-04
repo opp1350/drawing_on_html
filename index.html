@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="/style/reset.css" />
+        <link rel="stylesheet" href="/style/common.css" />
+        <title>Paint Tool</title>
+    </head>
+    <body>
+        <header>Paint Tool</header>
+        <main>
+            <canvas id="canvas" width="640" height="400"></canvas>
+            <div class="color-palette">
+                <button class="color-palette-item" value="#f00000" aria-label="빨강색"></button>
+                <button class="color-palette-item" value="#ff9933" aria-label="주황색"></button>
+                <button class="color-palette-item" value="#ffff00" aria-label="노란색"></button>
+                <button class="color-palette-item" value="#00ff00" aria-label="초록색"></button>
+                <button class="color-palette-item" value="#009fff" aria-label="파란색"></button>
+            </div>
+            <!-- <input type="range" name="brush-width-controller" id="brush-width-controller" min="1" max="5" /> -->
+        </main>
+        <footer>2022 @이경량</footer>
+        <script src="/js/paint.js" async="async"></script>
+    </body>
+</html>
