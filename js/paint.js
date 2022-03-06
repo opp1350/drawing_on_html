@@ -1,6 +1,7 @@
 // convas w, h
 const canvasWidth = 640;
 const canvasHeight = 400;
+
 // canvas
 const tempCanvas = document.getElementById("canvas");
 const tempCtx = tempCanvas.getContext("2d");
@@ -11,8 +12,13 @@ tempCanvas.height = canvasHeight;
 const lineColors = document.querySelectorAll(".line-color");
 const bgColors = document.querySelectorAll(".bg-color");
 const reset = document.getElementById("reset-canvas");
+const downloadCanvas = document.getElementById("save-canvas");
 const drawRect = document.getElementById("rectangle");
+const drawEllipse = document.getElementById("ellipse");
+const drawTriangle = document.getElementById("triangle");
+
 const drawLine = document.getElementById("pencil");
+const eraser = document.getElementById("eraser");
 
 // Temp canvas
 // 실제 그림은 여기서 그려짐
@@ -28,11 +34,15 @@ ctx.fillRect(0, 0, canvas.width, canvas.height);
 ctx.lineWidth = 2.5;
 ctx.lineCap = "round";
 
+// Temp canvas default style
+tempCtx.lineWidth = 2.5;
+tempCtx.lineCap = "round";
+
 // status
 let painting = false;
 let tool = "pencil";
 
-// w, y
+// Mousedown Event Start Point
 let startX = 0;
 let startY = 0;
 
@@ -55,8 +65,9 @@ const changeBgColor = (e) => {
 
 const notPaint = (e) => {
     painting = false;
+    ctx.globalCompositeOperation = "source-over";
+    tempCtx.globalCompositeOperation = "source-over";
     imgUpdate();
-    console.log("imgUpdate");
 };
 
 const nowPaint = (e) => {
@@ -70,25 +81,47 @@ const convasMouseMove = (e) => {
     const y = e.offsetY;
     if (!painting) {
         ctx.beginPath(); // 새로운 경로 생성
+        tempCtx.beginPath(); // 새로운 경로 생성 (지우개용)
         ctx.moveTo(x, y); // 시작 위치를 명확히 지정
     } else {
+        // 도형 그리기용 정보
+        const figureX = Math.min(startX, x),
+            figureY = Math.min(startY, y),
+            w = Math.max(startX, x) - figureX,
+            h = Math.max(startY, y) - figureY;
+        // tools
         if (tool === "pencil") {
             ctx.lineTo(x, y);
             ctx.stroke();
+        } else if (tool === "eraser") {
+            tempCtx.globalCompositeOperation = "destination-out";
+            tempCtx.lineTo(x, y);
+            tempCtx.stroke();
         } else if (tool === "rectangle") {
-            const recX = Math.min(startX, x),
-                recY = Math.min(startY, y),
-                w = Math.max(startX, x) - recX,
-                h = Math.max(startY, y) - recY;
-            // console.log(recX, recY, w, h, ctx.strokeStyle, ctx.fillStyle);
-            ctx.clearRect(0, 0, tempCanvas.width, tempCanvas.height);
-            ctx.strokeRect(recX, recY, w, h);
-            ctx.fillRect(recX + ctx.lineWidth / 2, recY + ctx.lineWidth / 2, w - ctx.lineWidth, h - ctx.lineWidth);
+            ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+            ctx.strokeRect(figureX, figureY, w, h);
+            ctx.fillRect(figureX + ctx.lineWidth / 2, figureY + ctx.lineWidth / 2, w - ctx.lineWidth, h - ctx.lineWidth);
+        } else if (tool === "ellipse") {
+            ctx.beginPath(); // 없으면 마우스를 따라 원이 중첩되며 출력
+            ctx.ellipse(figureX, figureY, w, h, Math.PI * 2, 0, Math.PI * 2);
+            ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+            ctx.stroke();
+            ctx.fill();
+        } else if (tool === "triangle") {
+            console.log("triangle");
         } else {
             alert("아직 제공하지 않는 도구입니다.");
             tool = "pencil"; // pencil로 초기화
         }
     }
+};
+
+const download = () => {
+    const img = tempCanvas.toDataURL("image/jpeg", 1);
+    const link = document.createElement("a");
+    link.href = img;
+    link.download = "my_awesome_painting";
+    link.click();
 };
 
 const resetCanvas = () => {
@@ -104,8 +137,20 @@ const drawingRect = () => {
     tool = "rectangle";
 };
 
-const drawingLine = () => {
+const usePencil = () => {
     tool = "pencil";
+};
+
+const useEraser = () => {
+    tool = "eraser";
+};
+
+const drawingEllipse = () => {
+    tool = "ellipse";
+};
+
+const drawingTriangle = () => {
+    tool = "triangle";
 };
 
 // Add Event Listener
@@ -122,5 +167,10 @@ if (tempCanvas && canvas) {
 lineColors.forEach((color) => color.addEventListener("click", changeLineColor));
 bgColors.forEach((color) => color.addEventListener("click", changeBgColor));
 reset.addEventListener("click", resetCanvas);
+downloadCanvas.addEventListener("click", download);
+
 drawRect.addEventListener("click", drawingRect);
-drawLine.addEventListener("click", drawingLine);
+eraser.addEventListener("click", useEraser);
+drawLine.addEventListener("click", usePencil);
+drawEllipse.addEventListener("click", drawingEllipse);
+drawTriangle.addEventListener("click", drawingTriangle);
