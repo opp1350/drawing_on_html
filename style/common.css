@@ -1,16 +1,22 @@
 main {
-    display: flex;
+    width: 100%;
 }
 #canvas {
     border: 1px solid #ddd;
 }
 .color-palette {
     display: flex;
+    flex-direction: column;
 }
 .color-palette .color-palette-item {
     width: 20px;
     height: 20px;
 }
+
+.color-palette .color-palette-item:active {
+    border: 1px solid;
+}
+
 .color-palette .color-palette-item:nth-child(1) {
     background-color: #f00000;
 }
@@ -25,4 +31,19 @@ main {
 }
 .color-palette .color-palette-item:nth-child(5) {
     background-color: #009fff;
+}
+
+button {
+    background-color: #fff;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+}
+
+.canvas-wrapper {
+    position: relative;
+}
+.canvas-wrapper #imageTemp {
+    position: absolute;
+    top: 1px;
+    left: 1px;
 }
