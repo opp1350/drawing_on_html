@@ -9,7 +9,13 @@
         <title>Drawing on HTML</title>
     </head>
     <body>
-        <header><h1>✨Drawing on HTML</h1></header>
+        <header>
+            <h1>✨Drawing on HTML</h1>
+            <nav class="nav">
+                <button id="reset-canvas">Reset</button>
+                <button id="save-canvas">Save My Masterpiece</button>
+            </nav>
+        </header>
         <main>
             <div class="canvas-wrap">
                 <canvas id="canvas" width="640" height="400"></canvas>
@@ -53,10 +59,6 @@
                     <button id="rectangle" class="tools-item" value="rectangle">네모 그리기</button>
                     <!-- <button id="triangle" class="tools-item" disabled="disabled" value="triangle">세모 그리기</button> -->
                     <button id="ellipse" class="tools-item" value="ellipse">동그라미 그리기</button>
-                    <!-- ect -->
-                    <br />
-                    <button id="reset-canvas">새로 그리기</button>
-                    <button id="save-canvas">멋진 그림 저장하기</button>
                 </div>
             </div>
         </main>
