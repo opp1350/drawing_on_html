@@ -1,5 +1,11 @@
+// convas w, h
+const canvasWidth = 640;
+const canvasHeight = 400;
+// canvas
 const tempCanvas = document.getElementById("canvas");
 const tempCtx = tempCanvas.getContext("2d");
+tempCanvas.width = canvasWidth;
+tempCanvas.height = canvasHeight;
 
 // elements
 const lineColors = document.querySelectorAll(".line-color");
@@ -8,23 +14,17 @@ const reset = document.getElementById("reset-canvas");
 const drawRect = document.getElementById("rectangle");
 const drawLine = document.getElementById("pencil");
 
-// Create Temp canvas
+// Temp canvas
 // 실제 그림은 여기서 그려짐
-const container = tempCanvas.parentNode; // .canvas-wrapper
-const canvas = document.createElement("canvas");
+const canvas = document.getElementById("tempCanvas");
 const ctx = canvas.getContext("2d");
-canvas.id = "imageTemp";
-canvas.width = tempCanvas.width;
-canvas.height = tempCanvas.height;
-container.appendChild(canvas);
-
-// canvas
-tempCanvas.width = 640;
-tempCanvas.height = 400;
+canvas.width = canvasWidth;
+canvas.height = canvasHeight;
 
 // default style
 ctx.strokeStyle = "#000000";
 ctx.fillStyle = "#ffffff";
+ctx.fillRect(0, 0, canvas.width, canvas.height);
 ctx.lineWidth = 2.5;
 ctx.lineCap = "round";
 
@@ -96,6 +96,7 @@ const resetCanvas = () => {
     if (confirmReset) {
         tempCtx.clearRect(0, 0, tempCanvas.width, tempCanvas.height);
         ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
     } else return;
 };
 
@@ -108,14 +109,14 @@ const drawingLine = () => {
 };
 
 // Add Event Listener
-if (tempCanvas) {
+if (tempCanvas && canvas) {
     // mouse event
     canvas.addEventListener("mousemove", convasMouseMove);
     canvas.addEventListener("mousedown", nowPaint);
     canvas.addEventListener("mouseup", notPaint);
     canvas.addEventListener("mouseleave", notPaint);
 } else {
-    console.log("오잉 캔버스가 없네요??");
+    alert("생성된 캔버스가 없습니다.");
 }
 
 lineColors.forEach((color) => color.addEventListener("click", changeLineColor));

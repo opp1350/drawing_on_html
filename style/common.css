@@ -1,22 +1,97 @@
-main {
-    width: 100%;
+/* font */
+@import "/style/font.css";
+
+html {
+    background-color: #e0e0e3;
 }
-#canvas {
-    border: 1px solid #ddd;
+
+body {
+    font-family: "DungGeunMo", sans-serif;
+}
+
+header {
+    padding: 24px 16px 12px;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 32px;
+}
+
+main {
+    padding: 24px 16px 0;
+}
+
+footer {
+    padding: 24px 16px 10px;
+    text-align: center;
+    font-size: 14px;
+}
+
+button {
+    box-shadow: inset -1px -1px 0px 0 rgb(0 0 0 / 23%), inset 1px 1px 0px 0 rgb(255 255 255 / 80%);
+    padding: 10px 12px;
+    border: 1px solid #222;
+    background-color: #d3d3d3;
+}
+button.active {
+    box-shadow: inset 2px 2px 1px 0 rgb(0 0 0 / 23%), inset -1px -1px 2px 0 rgb(255 255 255 / 60%);
+    background: #fff;
+}
+
+/* canvas */
+.canvas-wrap {
+    position: relative;
+    display: flex;
+    justify-content: center;
+}
+.canvas-wrap #canvas {
+    border: 1px solid #222;
+}
+.canvas-wrap #tempCanvas {
+    position: absolute;
+    top: 1px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.tools-wrap {
+    max-width: 640px;
+    margin: 24px auto 0;
+}
+
+.tools-wrap > div {
+    text-align: center;
+}
+
+.tools-wrap > div + div {
+    margin-top: 16px;
+}
+
+.tools-wrap .func-btn-wrap button {
+    margin-bottom: 8px;
+}
+
+/* color-palette */
+.color-palette-wrap h2 {
+    margin-bottom: 8px;
 }
 .color-palette {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    justify-content: center;
 }
 .color-palette .color-palette-item {
-    width: 20px;
-    height: 20px;
+    width: 24px;
+    height: 24px;
+    padding: 0;
 }
-
-.color-palette .color-palette-item:active {
-    border: 1px solid;
+.color-palette .color-palette-item + .color-palette-item {
+    margin-left: 1px;
 }
-
+.color-palette .color-palette-item.active {
+    box-shadow: inset 1px 1px 2px 0 rgb(0 0 0 / 60%), inset -1px -1px 2px 0 rgb(255 255 255 / 60%);
+}
 .color-palette .color-palette-item:nth-child(1) {
     background-color: #f00000;
 }
@@ -31,19 +106,4 @@ main {
 }
 .color-palette .color-palette-item:nth-child(5) {
     background-color: #009fff;
-}
-
-button {
-    background-color: #fff;
-    padding: 10px 12px;
-    border: 1px solid #ddd;
-}
-
-.canvas-wrapper {
-    position: relative;
-}
-.canvas-wrapper #imageTemp {
-    position: absolute;
-    top: 1px;
-    left: 1px;
 }

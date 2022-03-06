@@ -6,42 +6,49 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="stylesheet" href="/style/reset.css" />
         <link rel="stylesheet" href="/style/common.css" />
-        <title>Paint Tool</title>
+        <title>Drawing on HTML</title>
     </head>
     <body>
-        <header><h1>Paint Tool</h1></header>
+        <header><h1>Drawing on HTML</h1></header>
         <main>
-            <div class="canvas-wrapper">
+            <div class="canvas-wrap">
                 <canvas id="canvas" width="640" height="400"></canvas>
+                <canvas id="tempCanvas" width="640" height="400"></canvas>
             </div>
-            <div>
-                <h2>선 색상</h2>
-                <div class="color-palette">
-                    <button class="color-palette-item line-color" value="#f00000" aria-label="빨강색"></button>
-                    <button class="color-palette-item line-color" value="#ff9933" aria-label="주황색"></button>
-                    <button class="color-palette-item line-color" value="#ffff00" aria-label="노란색"></button>
-                    <button class="color-palette-item line-color" value="#00ff00" aria-label="초록색"></button>
-                    <button class="color-palette-item line-color" value="#009fff" aria-label="파란색"></button>
-                    <!-- <button class="color-palette-item line-color" value="rgb(255 255 255 / 0)" aria-label="색상 없음"></button> -->
+            <div class="tools-wrap">
+                <div class="color-palette-wrap">
+                    <h2>Line Colors</h2>
+                    <div class="color-palette">
+                        <button class="color-palette-item line-color" value="#f00000" aria-label="빨강색"></button>
+                        <button class="color-palette-item line-color" value="#ff9933" aria-label="주황색"></button>
+                        <button class="color-palette-item line-color" value="#ffff00" aria-label="노란색"></button>
+                        <button class="color-palette-item line-color" value="#00ff00" aria-label="초록색"></button>
+                        <button class="color-palette-item line-color" value="#009fff" aria-label="파란색"></button>
+                        <!-- <button class="color-palette-item line-color" value="rgb(255 255 255 / 0)" aria-label="색상 없음"></button> -->
+                    </div>
+                </div>
+                <div class="color-palette-wrap">
+                    <h2>Background Colors</h2>
+                    <div class="color-palette">
+                        <button class="color-palette-item bg-color" value="#f00000" aria-label="빨강색"></button>
+                        <button class="color-palette-item bg-color" value="#ff9933" aria-label="주황색"></button>
+                        <button class="color-palette-item bg-color" value="#ffff00" aria-label="노란색"></button>
+                        <button class="color-palette-item bg-color" value="#00ff00" aria-label="초록색"></button>
+                        <button class="color-palette-item bg-color" value="#009fff" aria-label="파란색"></button>
+                    </div>
+                </div>
+                <div class="func-btn-wrap">
+                    <button id="pencil" class="tools-item active">펜으로 그리기</button>
+                    <button id="rectangle" class="tools-item">네모 그리기</button>
+                    <button id="triangle" class="tools-item">세모 그리기</button>
+                    <button id="ellipse" class="tools-item">동그라미 그리기</button>
+                    <button id="reset-canvas">새로 그리기</button>
+                    <button id="save-canvas">그린 그림 저장하기</button>
                 </div>
             </div>
-            <div>
-                <h2>배경 색상</h2>
-                <div class="color-palette">
-                    <button class="color-palette-item bg-color" value="#f00000" aria-label="빨강색"></button>
-                    <button class="color-palette-item bg-color" value="#ff9933" aria-label="주황색"></button>
-                    <button class="color-palette-item bg-color" value="#ffff00" aria-label="노란색"></button>
-                    <button class="color-palette-item bg-color" value="#00ff00" aria-label="초록색"></button>
-                    <button class="color-palette-item bg-color" value="#009fff" aria-label="파란색"></button>
-                </div>
-            </div>
-            <button id="rectangle">네모 그리기</button>
-            <button id="pencil">펜으로 그리기</button>
-            <button id="reset-canvas">새로 그리기</button>
-            <button id="save-paint">그린 그림 저장하기</button>
-            <!-- <input type="range" name="brush-width-controller" id="brush-width-controller" min="1" max="5" /> -->
         </main>
         <footer>2022 @이경량</footer>
         <script src="/js/paint.js" async="async"></script>
+        <script src="/js/ui.js" async="async"></script>
     </body>
 </html>
