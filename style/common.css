@@ -39,6 +39,24 @@ button.active {
     background: #fff;
 }
 
+input[type="range"] {
+    -webkit-appearance: none;
+    width: 150px;
+    height: 4px;
+    border: 1px solid #222;
+    box-shadow: inset 1px 1px 0px 0 rgba(44, 44, 44, 0.4), inset -1px -1px 0px 0 rgb(255 255 255 / 90%);
+    background: #b7b7b7;
+}
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    background: #fff;
+    border: 1px solid #222;
+    height: 16px;
+    width: 8px;
+    border-radius: 2px;
+    box-shadow: inset -1px -1px 0px 0 rgb(0 0 0 / 40%);
+}
+
 /* canvas */
 .canvas-wrap {
     position: relative;
@@ -56,6 +74,28 @@ button.active {
     transform: translateX(-50%);
 }
 
+.color-info {
+    position: absolute;
+    bottom: 52px;
+    left: 258px;
+}
+
+.selected-color {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    border: 1px solid #222;
+}
+.selected-color.line {
+    position: absolute;
+    z-index: 1;
+}
+.selected-color.bg {
+    left: 16px;
+    top: 16px;
+    z-index: 0;
+}
+
 .tools-wrap {
     max-width: 640px;
     margin: 24px auto 0;
@@ -63,6 +103,10 @@ button.active {
 
 .tools-wrap > div {
     text-align: center;
+}
+
+.tools-wrap > div h2 {
+    margin-bottom: 8px;
 }
 
 .tools-wrap > div + div {
@@ -74,9 +118,6 @@ button.active {
 }
 
 /* color-palette */
-.color-palette-wrap h2 {
-    margin-bottom: 8px;
-}
 .color-palette {
     display: flex;
     flex-direction: row;

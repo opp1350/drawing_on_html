@@ -13,12 +13,9 @@ const lineColors = document.querySelectorAll(".line-color");
 const bgColors = document.querySelectorAll(".bg-color");
 const reset = document.getElementById("reset-canvas");
 const downloadCanvas = document.getElementById("save-canvas");
-const drawRect = document.getElementById("rectangle");
-const drawEllipse = document.getElementById("ellipse");
-const drawTriangle = document.getElementById("triangle");
-
-const drawLine = document.getElementById("pencil");
-const eraser = document.getElementById("eraser");
+const tools = document.querySelectorAll(".tools-item");
+// controller
+const widthController = document.getElementById("width-controller");
 
 // Temp canvas
 // 실제 그림은 여기서 그려짐
@@ -35,6 +32,7 @@ ctx.lineWidth = 2.5;
 ctx.lineCap = "round";
 
 // Temp canvas default style
+// 지우개 용도
 tempCtx.lineWidth = 2.5;
 tempCtx.lineCap = "round";
 
@@ -56,11 +54,13 @@ const imgUpdate = () => {
 const changeLineColor = (e) => {
     console.log(e.target.value);
     ctx.strokeStyle = e.target.value;
+    document.querySelector(".selected-color.line").style.backgroundColor = e.target.value;
 };
 
 const changeBgColor = (e) => {
     console.log(e.target.value);
     ctx.fillStyle = e.target.value;
+    document.querySelector(".selected-color.bg").style.backgroundColor = e.target.value;
 };
 
 const notPaint = (e) => {
@@ -129,28 +129,29 @@ const resetCanvas = () => {
     if (confirmReset) {
         tempCtx.clearRect(0, 0, tempCanvas.width, tempCanvas.height);
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
     } else return;
 };
 
-const drawingRect = () => {
-    tool = "rectangle";
+const changeTools = (e) => {
+    console.log(e.target.value);
+    tool = e.target.value;
+    if (tool === "eraser") {
+        document.getElementById("controller-target").innerHTML = "지우개";
+        document.getElementById("width-value").innerHTML = tempCtx.lineWidth;
+    } else {
+        document.getElementById("controller-target").innerHTML = "선";
+        document.getElementById("width-value").innerHTML = ctx.lineWidth;
+    }
 };
 
-const usePencil = () => {
-    tool = "pencil";
-};
-
-const useEraser = () => {
-    tool = "eraser";
-};
-
-const drawingEllipse = () => {
-    tool = "ellipse";
-};
-
-const drawingTriangle = () => {
-    tool = "triangle";
+const changeLineWidth = () => {
+    if (tool === "eraser") {
+        tempCtx.lineWidth = widthController.value;
+        document.getElementById("width-value").innerHTML = widthController.value;
+    } else {
+        ctx.lineWidth = widthController.value;
+        document.getElementById("width-value").innerHTML = widthController.value;
+    }
 };
 
 // Add Event Listener
@@ -166,11 +167,7 @@ if (tempCanvas && canvas) {
 
 lineColors.forEach((color) => color.addEventListener("click", changeLineColor));
 bgColors.forEach((color) => color.addEventListener("click", changeBgColor));
+tools.forEach((tool) => tool.addEventListener("click", changeTools));
 reset.addEventListener("click", resetCanvas);
 downloadCanvas.addEventListener("click", download);
-
-drawRect.addEventListener("click", drawingRect);
-eraser.addEventListener("click", useEraser);
-drawLine.addEventListener("click", usePencil);
-drawEllipse.addEventListener("click", drawingEllipse);
-drawTriangle.addEventListener("click", drawingTriangle);
+widthController.addEventListener("change", changeLineWidth);
