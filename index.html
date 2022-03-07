@@ -14,8 +14,10 @@
         </header>
         <main>
             <nav class="nav">
-                <button id="reset-canvas">Reset</button>
-                <button id="save-canvas">Save My Masterpiece</button>
+                <button id="reset-canvas" class="nav-item">Reset</button>
+                <label for="load-image" class="nav-item">Load Image</label>
+                <input type="file" accept="image/*" id="load-image" class="hidden" />
+                <button id="save-canvas" class="nav-item">Save My Masterpiece</button>
             </nav>
             <section class="canvas-wrap">
                 <canvas id="canvas" width="640" height="400" aria-label="그림이 나타나는 캔버스"></canvas>

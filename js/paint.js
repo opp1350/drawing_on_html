@@ -13,6 +13,7 @@ const lineColors = document.querySelectorAll(".line-color");
 const bgColors = document.querySelectorAll(".bg-color");
 const reset = document.getElementById("reset-canvas");
 const downloadCanvas = document.getElementById("save-canvas");
+const loadImg = document.getElementById("load-image");
 const tools = document.querySelectorAll(".tools-item");
 // controller
 const widthController = document.getElementById("width-controller");
@@ -154,6 +155,31 @@ const changeLineWidth = () => {
     }
 };
 
+const loadingImg = (e) => {
+    const reader = new FileReader();
+    const img = new Image();
+
+    reader.readAsDataURL(e.target.files[0]);
+    reader.onload = (e) => {
+        img.src = e.target.result;
+        img.onload = () => {
+            if (img.width > canvasWidth && img.height > canvasHeight) {
+                if (img.height >= img.width) {
+                    img.width = canvasHeight * (img.width / img.height);
+                    img.height = canvasHeight;
+                    ctx.drawImage(img, canvasWidth / 2 - img.width / 2, canvasHeight / 2 - img.height / 2, img.width, img.height);
+                } else {
+                    img.height = canvasWidth * (img.height / img.width);
+                    img.width = canvasWidth;
+                    ctx.drawImage(img, canvasWidth / 2 - img.width / 2, canvasHeight / 2 - img.height / 2, img.width, img.height);
+                }
+            } else {
+                ctx.drawImage(img, canvasWidth / 2 - img.width / 2, canvasHeight / 2 - img.height / 2);
+            }
+        };
+    };
+};
+
 // Add Event Listener
 if (tempCanvas && canvas) {
     // mouse event
@@ -161,10 +187,6 @@ if (tempCanvas && canvas) {
     canvas.addEventListener("mousedown", nowPaint);
     canvas.addEventListener("mouseup", notPaint);
     canvas.addEventListener("mouseleave", notPaint);
-    //touch event
-    canvas.addEventListener("touchstart", notPaint);
-    canvas.addEventListener("touchmove", convasMouseMove);
-    canvas.addEventListener("touchend", notPaint);
 } else {
     alert("생성된 캔버스가 없습니다.");
 }
@@ -172,6 +194,7 @@ if (tempCanvas && canvas) {
 lineColors.forEach((color) => color.addEventListener("click", changeLineColor));
 bgColors.forEach((color) => color.addEventListener("click", changeBgColor));
 tools.forEach((tool) => tool.addEventListener("click", changeTools));
+loadImg.addEventListener("change", loadingImg);
 reset.addEventListener("click", resetCanvas);
 downloadCanvas.addEventListener("click", download);
 widthController.addEventListener("change", changeLineWidth);
