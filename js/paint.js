@@ -118,7 +118,6 @@ const download = () => {
     newCanvasCtx.fillStyle = "#FFF";
     newCanvasCtx.fillRect(0, 0, canvasWidth, canvasHeight);
     newCanvasCtx.drawImage(tempCanvas, 0, 0);
-    newCanvas.toDataURL("image/jpeg");
     const img = newCanvas.toDataURL("image/jpeg", 1);
     const link = document.createElement("a");
     link.href = img;
