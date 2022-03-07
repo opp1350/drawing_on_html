@@ -2,12 +2,6 @@
 const canvasWidth = 640;
 const canvasHeight = 400;
 
-// canvas
-const tempCanvas = document.getElementById("canvas");
-const tempCtx = tempCanvas.getContext("2d");
-tempCanvas.width = canvasWidth;
-tempCanvas.height = canvasHeight;
-
 // elements
 const lineColors = document.querySelectorAll(".line-color");
 const bgColors = document.querySelectorAll(".bg-color");
@@ -18,24 +12,28 @@ const tools = document.querySelectorAll(".tools-item");
 // controller
 const widthController = document.getElementById("width-controller");
 
-// Temp canvas
-// 실제 그림은 여기서 그려짐
+// Canvas
+// 그림이 나타나는 캔버스
+const tempCanvas = document.getElementById("canvas");
+const tempCtx = tempCanvas.getContext("2d");
+tempCanvas.width = canvasWidth;
+tempCanvas.height = canvasHeight;
+// Canvas : eraser style
+tempCtx.fillStyle = "#ffffff";
+tempCtx.lineWidth = 2.5;
+tempCtx.lineCap = "round";
+
+// Temp Canvas
+// 실제 그림이 그려지는 캔버스
 const canvas = document.getElementById("tempCanvas");
 const ctx = canvas.getContext("2d");
 canvas.width = canvasWidth;
 canvas.height = canvasHeight;
-
-// default style
+// Temp canvas : default style
 ctx.strokeStyle = "#000000";
 ctx.fillStyle = "#ffffff";
-ctx.fillRect(0, 0, canvas.width, canvas.height);
 ctx.lineWidth = 2.5;
 ctx.lineCap = "round";
-
-// Temp canvas default style
-// 지우개 용도
-tempCtx.lineWidth = 2.5;
-tempCtx.lineCap = "round";
 
 // status
 let painting = false;
@@ -53,13 +51,11 @@ const imgUpdate = () => {
 };
 
 const changeLineColor = (e) => {
-    console.log(e.target.value);
     ctx.strokeStyle = e.target.value;
     document.querySelector(".selected-color.line").style.backgroundColor = e.target.value;
 };
 
 const changeBgColor = (e) => {
-    console.log(e.target.value);
     ctx.fillStyle = e.target.value;
     document.querySelector(".selected-color.bg").style.backgroundColor = e.target.value;
 };
@@ -108,8 +104,6 @@ const convasMouseMove = (e) => {
             ctx.clearRect(0, 0, canvasWidth, canvasHeight);
             ctx.stroke();
             ctx.fill();
-        } else if (tool === "triangle") {
-            console.log("triangle");
         } else {
             alert("아직 제공하지 않는 도구입니다.");
             tool = "pencil"; // pencil로 초기화
@@ -118,7 +112,14 @@ const convasMouseMove = (e) => {
 };
 
 const download = () => {
-    const img = tempCanvas.toDataURL("image/jpeg", 1);
+    // appendChild()와 같은 메소드를 이용해 추가하지 않으면 말 그대로 복사만 됨
+    const newCanvas = canvas.cloneNode(true); // 아무 캔버스 복사
+    const newCanvasCtx = newCanvas.getContext("2d");
+    newCanvasCtx.fillStyle = "#FFF";
+    newCanvasCtx.fillRect(0, 0, canvasWidth, canvasHeight);
+    newCanvasCtx.drawImage(tempCanvas, 0, 0);
+    newCanvas.toDataURL("image/jpeg");
+    const img = newCanvas.toDataURL("image/jpeg", 1);
     const link = document.createElement("a");
     link.href = img;
     link.download = "my_awesome_painting";
@@ -128,20 +129,21 @@ const download = () => {
 const resetCanvas = () => {
     const confirmReset = confirm("진행중인 작업이 전부 사라집니다.");
     if (confirmReset) {
-        tempCtx.clearRect(0, 0, tempCanvas.width, tempCanvas.height);
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        tempCtx.clearRect(0, 0, canvasWidth, canvasHeight);
+        ctx.clearRect(0, 0, canvasWidth, canvasHeight);
     } else return;
 };
 
 const changeTools = (e) => {
-    console.log(e.target.value);
     tool = e.target.value;
     if (tool === "eraser") {
         document.getElementById("controller-target").innerHTML = "지우개";
         document.getElementById("width-value").innerHTML = tempCtx.lineWidth;
+        widthController.value = tempCtx.lineWidth;
     } else {
         document.getElementById("controller-target").innerHTML = "선";
         document.getElementById("width-value").innerHTML = ctx.lineWidth;
+        widthController.value = ctx.lineWidth;
     }
 };
 
@@ -156,14 +158,14 @@ const changeLineWidth = () => {
 };
 
 const loadingImg = (e) => {
-    const reader = new FileReader();
-    const img = new Image();
+    const reader = new FileReader(); // 파일 읽어오기
+    const img = new Image(); // 이미지 Base64
 
-    reader.readAsDataURL(e.target.files[0]);
+    reader.readAsDataURL(e.target.files[0]); // 파일 arr로 저장되기 때문에 [0]
     reader.onload = (e) => {
         img.src = e.target.result;
         img.onload = () => {
-            if (img.width > canvasWidth && img.height > canvasHeight) {
+            if (img.width >= canvasWidth && img.height >= canvasHeight) {
                 if (img.height >= img.width) {
                     img.width = canvasHeight * (img.width / img.height);
                     img.height = canvasHeight;
@@ -190,7 +192,6 @@ if (tempCanvas && canvas) {
 } else {
     alert("생성된 캔버스가 없습니다.");
 }
-
 lineColors.forEach((color) => color.addEventListener("click", changeLineColor));
 bgColors.forEach((color) => color.addEventListener("click", changeBgColor));
 tools.forEach((tool) => tool.addEventListener("click", changeTools));
