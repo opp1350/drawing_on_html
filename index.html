@@ -11,24 +11,24 @@
     <body>
         <header>
             <h1>✨Drawing on HTML</h1>
+        </header>
+        <main>
             <nav class="nav">
                 <button id="reset-canvas">Reset</button>
                 <button id="save-canvas">Save My Masterpiece</button>
             </nav>
-        </header>
-        <main>
-            <div class="canvas-wrap">
-                <canvas id="canvas" width="640" height="400"></canvas>
-                <canvas id="tempCanvas" width="640" height="400"></canvas>
+            <section class="canvas-wrap">
+                <canvas id="canvas" width="640" height="400" aria-label="그림이 나타나는 캔버스"></canvas>
+                <canvas id="tempCanvas" width="640" height="400" aria-label="그림이 그려지는 캔버스"></canvas>
                 <div class="color-info">
                     <div class="selected-color line" style="background-color: #000000"></div>
                     <div class="selected-color bg" style="background-color: #ffffff"></div>
                 </div>
-            </div>
-            <div class="tools-wrap">
-                <div class="controller-wrap">
-                    <h2><span id="controller-target">선</span> 두께 : <em id="width-value">2.5</em>px</h2>
-                    <input type="range" name="width-controller" id="width-controller" min="1" max="10" />
+            </section>
+            <section class="tools-wrap">
+                <div class="width-controller-wrap">
+                    <label for="width-controller"><span id="controller-target">선</span> 두께 : <em id="width-value">2.5</em>px</label>
+                    <input type="range" name="width-controller" id="width-controller" min="1" max="10" step="0.5" />
                 </div>
                 <div class="color-palette-wrap">
                     <h2>Line Colors</h2>
@@ -52,15 +52,14 @@
                         <button class="color-palette-item bg-color" value="#ffffff" aria-label="흰색"></button>
                     </div>
                 </div>
-                <div class="func-btn-wrap">
+                <div class="tools-controller-wrap">
                     <!-- tools -->
                     <button id="pencil" class="tools-item active" value="pencil">펜으로 그리기</button>
                     <button id="eraser" class="tools-item" value="eraser">지우개</button>
                     <button id="rectangle" class="tools-item" value="rectangle">네모 그리기</button>
-                    <!-- <button id="triangle" class="tools-item" disabled="disabled" value="triangle">세모 그리기</button> -->
                     <button id="ellipse" class="tools-item" value="ellipse">동그라미 그리기</button>
                 </div>
-            </div>
+            </section>
         </main>
         <footer>2022 @이경량</footer>
         <script src="/js/paint.js" async="async"></script>
