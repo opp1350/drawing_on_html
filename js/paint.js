@@ -19,7 +19,6 @@ const tempCtx = tempCanvas.getContext("2d");
 tempCanvas.width = canvasWidth;
 tempCanvas.height = canvasHeight;
 // Canvas : eraser style
-tempCtx.fillStyle = "#ffffff";
 tempCtx.lineWidth = 2.5;
 tempCtx.lineCap = "round";
 
@@ -60,9 +59,8 @@ const changeBgColor = (e) => {
     document.querySelector(".selected-color.bg").style.backgroundColor = e.target.value;
 };
 
-const notPaint = (e) => {
+const notPaint = () => {
     painting = false;
-    ctx.globalCompositeOperation = "source-over";
     tempCtx.globalCompositeOperation = "source-over";
     imgUpdate();
 };
@@ -78,8 +76,11 @@ const convasMouseMove = (e) => {
     const y = e.offsetY;
     if (!painting) {
         ctx.beginPath(); // 새로운 경로 생성
-        tempCtx.beginPath(); // 새로운 경로 생성 (지우개용)
         ctx.moveTo(x, y); // 시작 위치를 명확히 지정
+        if (tool === "eraser") {
+            tempCtx.beginPath(); // 새로운 경로 생성 (지우개용)
+            tempCtx.moveTo(x, y);
+        }
     } else {
         // 도형 그리기용 정보
         const figureX = Math.min(startX, x),
@@ -99,21 +100,20 @@ const convasMouseMove = (e) => {
             ctx.strokeRect(figureX, figureY, w, h);
             ctx.fillRect(figureX + ctx.lineWidth / 2, figureY + ctx.lineWidth / 2, w - ctx.lineWidth, h - ctx.lineWidth);
         } else if (tool === "ellipse") {
-            ctx.beginPath(); // 없으면 마우스를 따라 원이 중첩되며 출력
+            ctx.beginPath();
             ctx.ellipse(figureX, figureY, w, h, Math.PI * 2, 0, Math.PI * 2);
             ctx.clearRect(0, 0, canvasWidth, canvasHeight);
             ctx.stroke();
             ctx.fill();
         } else {
             alert("아직 제공하지 않는 도구입니다.");
-            tool = "pencil"; // pencil로 초기화
+            tool = "pencil";
         }
     }
 };
 
 const download = () => {
-    // appendChild()와 같은 메소드를 이용해 추가하지 않으면 말 그대로 복사만 됨
-    const newCanvas = canvas.cloneNode(true); // 아무 캔버스 복사
+    const newCanvas = canvas.cloneNode(true);
     const newCanvasCtx = newCanvas.getContext("2d");
     newCanvasCtx.fillStyle = "#FFF";
     newCanvasCtx.fillRect(0, 0, canvasWidth, canvasHeight);
