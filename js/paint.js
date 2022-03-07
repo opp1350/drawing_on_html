@@ -156,29 +156,35 @@ const changeLineWidth = () => {
     }
 };
 
-const loadingImg = (e) => {
-    const reader = new FileReader(); // 파일 읽어오기
-    const img = new Image(); // 이미지 Base64
+const resettingImg = (e) => {
+    e.target.value = null;
+};
 
-    reader.readAsDataURL(e.target.files[0]); // 파일 arr로 저장되기 때문에 [0]
-    reader.onload = (e) => {
-        img.src = e.target.result;
-        img.onload = () => {
-            if (img.width >= canvasWidth && img.height >= canvasHeight) {
-                if (img.height >= img.width) {
-                    img.width = canvasHeight * (img.width / img.height);
-                    img.height = canvasHeight;
-                    ctx.drawImage(img, canvasWidth / 2 - img.width / 2, canvasHeight / 2 - img.height / 2, img.width, img.height);
+const loadingImg = (e) => {
+    if (e.target.files[0] !== null) {
+        const reader = new FileReader(); // 파일 읽어오기
+        const img = new Image(); // 이미지 Base64
+
+        reader.readAsDataURL(e.target.files[0]); // 파일 arr로 저장되기 때문에 [0]
+        reader.onload = (e) => {
+            img.src = e.target.result;
+            img.onload = () => {
+                if (img.width >= canvasWidth && img.height >= canvasHeight) {
+                    if (img.height >= img.width) {
+                        img.width = canvasHeight * (img.width / img.height);
+                        img.height = canvasHeight;
+                        ctx.drawImage(img, canvasWidth / 2 - img.width / 2, canvasHeight / 2 - img.height / 2, img.width, img.height);
+                    } else {
+                        img.height = canvasWidth * (img.height / img.width);
+                        img.width = canvasWidth;
+                        ctx.drawImage(img, canvasWidth / 2 - img.width / 2, canvasHeight / 2 - img.height / 2, img.width, img.height);
+                    }
                 } else {
-                    img.height = canvasWidth * (img.height / img.width);
-                    img.width = canvasWidth;
-                    ctx.drawImage(img, canvasWidth / 2 - img.width / 2, canvasHeight / 2 - img.height / 2, img.width, img.height);
+                    ctx.drawImage(img, canvasWidth / 2 - img.width / 2, canvasHeight / 2 - img.height / 2);
                 }
-            } else {
-                ctx.drawImage(img, canvasWidth / 2 - img.width / 2, canvasHeight / 2 - img.height / 2);
-            }
+            };
         };
-    };
+    } else return;
 };
 
 // Add Event Listener
@@ -195,6 +201,7 @@ lineColors.forEach((color) => color.addEventListener("click", changeLineColor));
 bgColors.forEach((color) => color.addEventListener("click", changeBgColor));
 tools.forEach((tool) => tool.addEventListener("click", changeTools));
 loadImg.addEventListener("change", loadingImg);
+loadImg.addEventListener("click", resettingImg);
 reset.addEventListener("click", resetCanvas);
 downloadCanvas.addEventListener("click", download);
 widthController.addEventListener("change", changeLineWidth);
