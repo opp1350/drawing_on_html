@@ -161,6 +161,10 @@ if (tempCanvas && canvas) {
     canvas.addEventListener("mousedown", nowPaint);
     canvas.addEventListener("mouseup", notPaint);
     canvas.addEventListener("mouseleave", notPaint);
+    //touch event
+    canvas.addEventListener("touchstart", notPaint);
+    canvas.addEventListener("touchmove", convasMouseMove);
+    canvas.addEventListener("touchend", notPaint);
 } else {
     alert("생성된 캔버스가 없습니다.");
 }
