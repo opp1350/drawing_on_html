@@ -97,7 +97,6 @@ const convasMouseMove = (e) => {
         if (tool === "pencil") {
             ctx.lineTo(x, y);
             ctx.stroke();
-            console.log("convasMouseMove");
         } else if (tool === "eraser") {
             tempCtx.globalCompositeOperation = "destination-out";
             tempCtx.lineTo(x, y);
