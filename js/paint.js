@@ -69,6 +69,12 @@ const nowPaint = (e) => {
     painting = true;
     startX = e.offsetX;
     startY = e.offsetY;
+    if (tool === "pencil") {
+        ctx.beginPath();
+        ctx.moveTo(startX, startY);
+        ctx.lineTo(startX, startY);
+        ctx.stroke();
+    }
 };
 
 const convasMouseMove = (e) => {
@@ -91,6 +97,7 @@ const convasMouseMove = (e) => {
         if (tool === "pencil") {
             ctx.lineTo(x, y);
             ctx.stroke();
+            console.log("convasMouseMove");
         } else if (tool === "eraser") {
             tempCtx.globalCompositeOperation = "destination-out";
             tempCtx.lineTo(x, y);
